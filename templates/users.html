@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Пользователи</title>
+</head>
+<body>
+
+<h2>Пользователи</h2>
+
+{% for user in users %}
+
+<p>{{ user[0] }}</p>
+
+{% endfor %}
+
+<br>
+
+<a href="/chat">Назад в чат</a>
+
+</body>
+</html>

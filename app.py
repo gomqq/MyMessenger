@@ -97,7 +97,27 @@ def login():
 
     return render_template("login.html")
 
+@app.route("/users")
+def users():
 
+    if "username" not in session:
+        return redirect("/login")
+
+    conn = sqlite3.connect("users.db")
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT username FROM users ORDER BY username"
+    )
+
+    users = cursor.fetchall()
+
+    conn.close()
+
+    return render_template(
+        "users.html",
+        users=users
+    )
 @app.route("/chat", methods=["GET", "POST"])
 def chat():
 
