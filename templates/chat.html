@@ -100,7 +100,7 @@
 
 <div class="chat">
 
-    <div class="messages">
+    <div class="messages" id="messages">
 
         {% for username, text, created_at in messages %}
 
@@ -137,6 +137,16 @@
     </button>
 
 </form>
+<script>
+function loadMessages() {
+    fetch("/messages")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("messages").innerHTML = data;
+        });
+}
 
+setInterval(loadMessages, 3000);
+</script>
 </body>
 </html>
