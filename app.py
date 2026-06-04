@@ -278,6 +278,25 @@ def allusers():
     conn.close()
 
     return str(users)
+@app.route("/allprivate")
+def allprivate():
+
+    conn = sqlite3.connect("users.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT sender, receiver, text
+        FROM private_messages
+    """)
+
+    data = cursor.fetchall()
+
+    conn.close()
+
+    return str(data)
+@app.route("/whoami")
+def whoami():
+    return session.get("username", "not logged in")
 
 if __name__ == "__main__":
     app.run(debug=True)
