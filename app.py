@@ -139,7 +139,37 @@ def chat():
         messages=messages,
         username=session["username"]
     )
+@app.route("/messages")
+def get_messages():
 
+    conn = sqlite3.connect("users.db")
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT username, text, created_at FROM messages ORDER BY id"
+    )
+
+    messages = cursor.fetchall()
+
+    conn.close()
+
+    result = ""
+
+    for username, text, created_at in messages:
+
+        result += f"""
+        <div class="message">
+            <div class="author">
+                {username} • {created_at}
+            </div>
+
+            <div class="text">
+                {text}
+            </div>
+        </div>
+        """
+
+    return result
 
 @app.route("/logout")
 def logout():
