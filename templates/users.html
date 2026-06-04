@@ -9,7 +9,11 @@
 
 {% for user in users %}
 
-<p>{{ user[0] }}</p>
+<p>
+    <a href="/dialog/{{ user[0] }}">
+        {{ user[0] }}
+    </a>
+</p>
 
 {% endfor %}
 
