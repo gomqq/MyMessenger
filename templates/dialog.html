@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Диалог</title>
+
+    <style>
+
+        body {
+            margin: 0;
+            background: #0f172a;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+
+        .header {
+            background: #1e293b;
+            padding: 15px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .messages {
+            max-width: 900px;
+            margin: auto;
+            padding: 20px;
+            padding-bottom: 100px;
+        }
+
+        .my-message {
+            background: #2563eb;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            margin-left: 200px;
+        }
+
+        .other-message {
+            background: #1e293b;
+            padding: 12px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            margin-right: 200px;
+        }
+
+        .author {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .time {
+            color: #cbd5e1;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .form {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #1e293b;
+            padding: 15px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .form input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        .form button {
+            background: #22c55e;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .back {
+            display: inline-block;
+            margin: 15px;
+            color: white;
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<div class="header">
+    Диалог с {{ username }}
+</div>
+
+<div class="messages">
+
+{% for sender, text, created_at in messages %}
+
+    {% if sender == session["username"] %}
+
+        <div class="my-message">
+
+            <div class="author">
+                Вы
+            </div>
+
+            <div>
+                {{ text }}
+            </div>
+
+            <div class="time">
+                {{ created_at }}
+            </div>
+
+        </div>
+
+    {% else %}
+
+        <div class="other-message">
+
+            <div class="author">
+                {{ sender }}
+            </div>
+
+            <div>
+                {{ text }}
+            </div>
+
+            <div class="time">
+                {{ created_at }}
+            </div>
+
+        </div>
+
+    {% endif %}
+
+{% endfor %}
+
+</div>
+
+<a class="back" href="/users">
+    ← Назад к пользователям
+</a>
+
+<form class="form" method="POST">
+
+    <input
+        type="text"
+        name="message"
+        placeholder="Введите сообщение..."
+        autocomplete="off"
+        required
+    >
+
+    <button type="submit">
+        Отправить
+    </button>
+
+</form>
+
+</body>
+</html>

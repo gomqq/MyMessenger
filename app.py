@@ -27,12 +27,21 @@ def init_db():
     )
     """)
 
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS private_messages (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        sender TEXT NOT NULL,
+        receiver TEXT NOT NULL,
+        text TEXT NOT NULL,
+        created_at TEXT NOT NULL
+    )
+    """)
+
     conn.commit()
     conn.close()
 
 
 init_db()
-
 
 @app.route("/")
 def home():
@@ -190,14 +199,85 @@ def get_messages():
         """
 
     return result
+@app.route("/dialog/<username>", methods=["GET", "POST"])
+def dialog(username):
 
-@app.route("/logout")
+    if "username" not in session:
+        return redirect("/login")
+
+    conn = sqlite3.connect("users.db")
+    cursor = conn.cursor()
+
+    if request.method == "POST":
+
+        text = request.form["message"]
+
+        if text.strip():
+
+            current_time = datetime.now().strftime("%H:%M")
+
+            cursor.execute(
+                """
+                INSERT INTO private_messages
+                (sender, receiver, text, created_at)
+                VALUES (?, ?, ?, ?)
+                """,
+                (
+                    session["username"],
+                    username,
+                    text,
+                    current_time
+                )
+            )
+
+            conn.commit()
+
+    cursor.execute(
+        """
+        SELECT sender, text, created_at
+        FROM private_messages
+        WHERE
+            (sender=? AND receiver=?)
+            OR
+            (sender=? AND receiver=?)
+        ORDER BY id
+        """,
+        (
+            session["username"],
+            username,
+            username,
+            session["username"]
+        )
+    )
+
+    messages = cursor.fetchall()
+
+    conn.close()
+
+    return render_template(
+        "dialog.html",
+        username=username,
+        messages=messages
+    )
 def logout():
 
     session.clear()
 
     return redirect("/login")
 
+@app.route("/allusers")
+def allusers():
+
+    conn = sqlite3.connect("users.db")
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT username, password FROM users")
+
+    users = cursor.fetchall()
+
+    conn.close()
+
+    return str(users)
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,25 +1,21 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Пользователи</title>
-</head>
-<body>
+@app.route("/users")
+def users():
 
-<h2>Пользователи</h2>
+    if "username" not in session:
+        return redirect("/login")
 
-{% for user in users %}
+    conn = sqlite3.connect("users.db")
+    cursor = conn.cursor()
 
-<p>
-    <a href="/dialog/{{ user[0] }}">
-        {{ user[0] }}
-    </a>
-</p>
+    cursor.execute(
+        "SELECT username FROM users ORDER BY username"
+    )
 
-{% endfor %}
+    users = cursor.fetchall()
 
-<br>
+    conn.close()
 
-<a href="/chat">Назад в чат</a>
-
-</body>
-</html>
+    return render_template(
+        "users.html",
+        users=users
+    )
