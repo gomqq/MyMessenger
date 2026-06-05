@@ -97,7 +97,7 @@
     Диалог с {{ username }}
 </div>
 
-<div class="messages">
+<div class="messages" id="messages">
 
 {% for sender, text, created_at in messages %}
 
@@ -162,6 +162,20 @@
     </button>
 
 </form>
+<script>
 
+function loadMessages() {
+
+    fetch("/dialog_messages/{{ username }}")
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById("messages").innerHTML = data;
+        });
+
+}
+
+setInterval(loadMessages, 2000);
+
+</script>
 </body>
 </html>

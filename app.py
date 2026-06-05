@@ -233,8 +233,63 @@ def dialog(username):
         messages=messages
     )
 
-@app.route("/allusers")
-def allusers():
+
+@app.route("/dialog_messages/<username>")
+def dialog_messages(username):
+
+    if "username" not in session:
+        return ""
+
+    conn = sqlite3.connect("users.db")
+    cursor = conn.cursor()
+
+    cursor.execute(
+        """
+        SELECT sender, text, created_at
+        FROM private_messages
+        WHERE
+            (sender=? AND receiver=?)
+            OR
+            (sender=? AND receiver=?)
+        ORDER BY id
+        """,
+        (
+            session["username"],
+            username,
+            username,
+            session["username"]
+        )
+    )
+
+    messages = cursor.fetchall()
+
+    conn.close()
+
+    result = ""
+
+    for sender, text, created_at in messages:
+
+        if sender == session["username"]:
+
+            result += f"""
+            <div class="my-message">
+                <div class="author">Вы</div>
+                <div>{text}</div>
+                <div class="time">{created_at}</div>
+            </div>
+            """
+
+        else:
+
+            result += f"""
+            <div class="other-message">
+                <div class="author">{sender}</div>
+                <div>{text}</div>
+                <div class="time">{created_at}</div>
+            </div>
+            """
+
+    return result
 
     conn = sqlite3.connect("users.db")
     cursor = conn.cursor()
