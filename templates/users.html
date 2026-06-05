@@ -1,25 +1,159 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="ru">
 <head>
-    <title>Пользователи</title>
+<meta charset="UTF-8">
+<title>Pulse | Пользователи</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#0b1120;
+    color:white;
+}
+
+.header{
+    background:#111827;
+    padding:20px;
+    font-size:28px;
+    font-weight:bold;
+    text-align:center;
+    border-bottom:1px solid #1f2937;
+}
+
+.logo{
+    color:#00e5ff;
+    text-shadow:
+        0 0 10px #00e5ff,
+        0 0 20px #00e5ff;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:30px;
+}
+
+.users-title{
+    color:#94a3b8;
+    margin-bottom:20px;
+    font-size:18px;
+}
+
+.user-card{
+    display:flex;
+    align-items:center;
+    gap:15px;
+
+    background:#111827;
+
+    padding:18px;
+    margin-bottom:12px;
+
+    border-radius:16px;
+
+    text-decoration:none;
+    color:white;
+
+    transition:.2s;
+}
+
+.user-card:hover{
+    transform:translateY(-2px);
+    background:#182235;
+}
+
+.avatar{
+    width:50px;
+    height:50px;
+
+    border-radius:50%;
+
+    background:linear-gradient(
+        135deg,
+        #5b7fff,
+        #00e5ff
+    );
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-weight:bold;
+    font-size:20px;
+}
+
+.username{
+    font-size:18px;
+}
+
+.online{
+    margin-left:auto;
+    color:#22c55e;
+    font-size:14px;
+}
+
+.back{
+    display:block;
+
+    margin-top:25px;
+
+    text-align:center;
+
+    text-decoration:none;
+    color:#60a5fa;
+}
+
+</style>
+
 </head>
 <body>
 
-<h2>Пользователи</h2>
+<div class="header">
+    <span class="logo">◉</span>
+    Pulse
+</div>
+
+<div class="container">
+
+<div class="users-title">
+Выберите пользователя для общения
+</div>
 
 {% for user in users %}
 
-<p>
-    <a href="/dialog/{{ user[0] }}">
-        {{ user[0] }}
-    </a>
-</p>
+<a class="user-card" href="/dialog/{{ user[0] }}">
+
+```
+<div class="avatar">
+    {{ user[0][0].upper() }}
+</div>
+
+<div class="username">
+    {{ user[0] }}
+</div>
+
+<div class="online">
+    ● online
+</div>
+```
+
+</a>
 
 {% endfor %}
 
-<br>
+<a class="back" href="/chat">
+← Вернуться в чат
+</a>
 
-<a href="/chat">Назад в чат</a>
+</div>
 
 </body>
 </html>

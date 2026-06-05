@@ -66,8 +66,16 @@ body::after{
 
 .logo{
     text-align:center;
-    font-size:64px;
+    font-size:72px;
+    color:#00e5ff;
     margin-bottom:10px;
+
+    text-shadow:
+        0 0 10px #00e5ff,
+        0 0 25px #00e5ff,
+        0 0 50px #00e5ff;
+
+    animation:pulse 2s infinite;
 }
 
 .title{
@@ -104,7 +112,11 @@ body::after{
     border:none;
     border-radius:14px;
     padding:16px;
-    background:#5865f2;
+    background:linear-gradient(
+90deg,
+#5b7fff,
+#00e5ff
+);
     color:white;
     font-size:16px;
     cursor:pointer;
@@ -125,7 +137,24 @@ body::after{
     color:#60a5fa;
     text-decoration:none;
 }
+@keyframes pulse{
 
+    0%{
+        transform:scale(1);
+        opacity:1;
+    }
+
+    50%{
+        transform:scale(1.15);
+        opacity:.8;
+    }
+
+    100%{
+        transform:scale(1);
+        opacity:1;
+    }
+
+}
 </style>
 
 </head>
@@ -134,14 +163,16 @@ body::after{
 <div class="card">
 
 ```
-<div class="logo">💬</div>
-
-<div class="title">
-    Pulse
+<div class="logo">
+◉
 </div>
 
 <div class="subtitle">
-    Общайся без ограничений
+Pulse
+</div>
+
+<div class="subtitle">
+Всегда на связи
 </div>
 
 <form method="POST">
