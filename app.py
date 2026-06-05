@@ -48,36 +48,6 @@ def home():
     return redirect("/login")
 
 
-@app.route("/register", methods=["GET", "POST"])
-def register():
-
-    if request.method == "POST":
-
-        username = request.form["username"]
-        password = request.form["password"]
-
-        conn = sqlite3.connect("users.db")
-        cursor = conn.cursor()
-
-        try:
-            cursor.execute(
-                "INSERT INTO users (username, password) VALUES (?, ?)",
-                (username, password)
-            )
-
-            conn.commit()
-
-            return redirect("/login")
-
-        except Exception as e:
-            return f"Ошибка: {e}"
-
-        finally:
-            conn.close()
-
-    return render_template("register.html")
-
-
 @app.route("/login", methods=["GET", "POST"])
 def login():
 
@@ -90,15 +60,18 @@ def login():
         cursor = conn.cursor()
 
         cursor.execute(
-            "SELECT * FROM users WHERE username=? AND password=?",
-            (username, password)
+            "SELECT * FROM users WHERE username=?",
+            (username,)
         )
 
         user = cursor.fetchone()
 
         conn.close()
 
-        if user:
+        print("Введено:", username, password)
+        print("Из базы:", user)
+
+        if user and user[2] == password:
             session["username"] = username
             return redirect("/chat")
 
@@ -259,11 +232,6 @@ def dialog(username):
         username=username,
         messages=messages
     )
-def logout():
-
-    session.clear()
-
-    return redirect("/login")
 
 @app.route("/allusers")
 def allusers():
@@ -297,6 +265,16 @@ def allprivate():
 @app.route("/whoami")
 def whoami():
     return session.get("username", "not logged in")
+@app.route("/test")
+def test():
+    return "Работает"
+
+@app.route("/logout")
+def logout():
+
+    session.clear()
+
+    return redirect("/login")
 
 if __name__ == "__main__":
     app.run(debug=True)
