@@ -47,6 +47,34 @@ init_db()
 def home():
     return redirect("/login")
 
+@app.route("/register", methods=["GET", "POST"])
+def register():
+
+    if request.method == "POST":
+
+        username = request.form["username"]
+        password = request.form["password"]
+
+        conn = sqlite3.connect("users.db")
+        cursor = conn.cursor()
+
+        try:
+            cursor.execute(
+                "INSERT INTO users (username, password) VALUES (?, ?)",
+                (username, password)
+            )
+
+            conn.commit()
+
+            return redirect("/login")
+
+        except Exception as e:
+            return f"Ошибка: {e}"
+
+        finally:
+            conn.close()
+
+    return render_template("register.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -204,6 +232,12 @@ def dialog(username):
             )
 
             conn.commit()
+            print(
+    "Сохранено:",
+    session["username"],
+    username,
+    text
+)
 
     cursor.execute(
         """
@@ -291,6 +325,8 @@ def dialog_messages(username):
 
     return result
 
+@app.route("/allusers")
+def allusers():
     conn = sqlite3.connect("users.db")
     cursor = conn.cursor()
 
