@@ -367,5 +367,37 @@ def logout():
 
     return redirect("/login")
 
+@app.route("/logout")
+def logout():
+
+    session.clear()
+
+    return redirect("/login")
+
+
+@app.route("/pulse")
+def pulse():
+
+    if "username" not in session:
+        return redirect("/login")
+
+    conn = sqlite3.connect("users.db")
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT username FROM users ORDER BY username"
+    )
+
+    users = cursor.fetchall()
+
+    conn.close()
+
+    return render_template(
+        "pulse.html",
+        users=users,
+        username=session["username"]
+    )
+
+
 if __name__ == "__main__":
     app.run(debug=True)

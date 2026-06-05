@@ -3,7 +3,7 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Pulse | Пользователи</title>
+<title>Pulse</title>
 
 <style>
 
@@ -20,95 +20,137 @@ body{
 }
 
 .header{
-    background:#111827;
-    padding:20px;
-    font-size:28px;
-    font-weight:bold;
+
+    padding:25px;
+
     text-align:center;
-    border-bottom:1px solid #1f2937;
+
+    border-bottom:1px solid rgba(255,255,255,.05);
+
+    background:#111827;
 }
 
 .logo{
-    color:#00e5ff;
-    text-shadow:
-        0 0 10px #00e5ff,
-        0 0 20px #00e5ff;
+
+    font-size:34px;
+
+    font-weight:800;
+
+    letter-spacing:3px;
+
+    background:linear-gradient(
+        90deg,
+        #00e5ff,
+        #5b7fff
+    );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
 }
 
-.container{
-    max-width:900px;
-    margin:auto;
-    padding:30px;
-}
+.subtitle{
 
-.users-title{
+    margin-top:8px;
+
     color:#94a3b8;
-    margin-bottom:20px;
-    font-size:18px;
 }
 
-.user-card{
+.users{
+
+    max-width:800px;
+
+    margin:30px auto;
+
+    padding:20px;
+}
+
+.user{
+
     display:flex;
+
     align-items:center;
+
     gap:15px;
 
     background:#111827;
 
     padding:18px;
+
     margin-bottom:12px;
 
-    border-radius:16px;
+    border-radius:18px;
 
     text-decoration:none;
+
     color:white;
 
     transition:.2s;
 }
 
-.user-card:hover{
+.user:hover{
+
     transform:translateY(-2px);
-    background:#182235;
+
+    background:#182338;
 }
 
 .avatar{
+
     width:50px;
+
     height:50px;
 
     border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:20px;
+
+    font-weight:bold;
 
     background:linear-gradient(
         135deg,
         #5b7fff,
         #00e5ff
     );
+}
 
-    display:flex;
-    justify-content:center;
-    align-items:center;
+.info{
+
+    flex:1;
+}
+
+.name{
+
+    font-size:18px;
 
     font-weight:bold;
-    font-size:20px;
 }
 
-.username{
-    font-size:18px;
-}
+.status{
 
-.online{
-    margin-left:auto;
     color:#22c55e;
+
     font-size:14px;
+
+    margin-top:4px;
 }
 
-.back{
-    display:block;
+.logout{
 
-    margin-top:25px;
+    position:fixed;
 
-    text-align:center;
+    right:20px;
+
+    top:20px;
 
     text-decoration:none;
-    color:#60a5fa;
+
+    color:#ef4444;
 }
 
 </style>
@@ -116,42 +158,51 @@ body{
 </head>
 <body>
 
+<a class="logout" href="/logout">
+Выйти
+</a>
+
 <div class="header">
-    <span class="logo">◉</span>
-    Pulse
+
+```
+<div class="logo">
+    ⚡ PULSE
 </div>
 
-<div class="container">
-
-<div class="users-title">
-Выберите пользователя для общения
+<div class="subtitle">
+    Ваши контакты
 </div>
+```
+
+</div>
+
+<div class="users">
 
 {% for user in users %}
 
-<a class="user-card" href="/dialog/{{ user[0] }}">
+<a class="user" href="/dialog/{{ user[0] }}">
 
 ```
 <div class="avatar">
     {{ user[0][0].upper() }}
 </div>
 
-<div class="username">
-    {{ user[0] }}
-</div>
+<div class="info">
 
-<div class="online">
-    ● online
+    <div class="name">
+        {{ user[0] }}
+    </div>
+
+    <div class="status">
+        🟢 Онлайн
+    </div>
+
 </div>
 ```
 
 </a>
 
 {% endfor %}
-
-<a class="back" href="/chat">
-← Вернуться в чат
-</a>
 
 </div>
 
