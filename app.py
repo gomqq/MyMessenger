@@ -367,12 +367,6 @@ def logout():
 
     return redirect("/login")
 
-@app.route("/logout")
-def logout():
-
-    session.clear()
-
-    return redirect("/login")
 
 
 @app.route("/pulse")
