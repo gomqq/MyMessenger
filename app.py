@@ -128,6 +128,8 @@ def users():
         "users.html",
         users=users
     )
+
+
 @app.route("/chat", methods=["GET", "POST"])
 def chat():
 
@@ -152,23 +154,28 @@ def chat():
 
             conn.commit()
 
-            conn.close()
-
             return redirect("/chat")
 
     cursor.execute(
         "SELECT username, text, created_at FROM messages ORDER BY id"
     )
-
     messages = cursor.fetchall()
+
+    cursor.execute(
+        "SELECT username FROM users ORDER BY username"
+    )
+    users = cursor.fetchall()
 
     conn.close()
 
     return render_template(
         "chat.html",
         messages=messages,
-        username=session["username"]
+        username=session["username"],
+        users=users
     )
+
+    
 @app.route("/messages")
 def get_messages():
 
