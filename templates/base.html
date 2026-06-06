@@ -26,6 +26,7 @@ body{
     height:100vh;
     background:#111827;
     border-right:1px solid rgba(255,255,255,.05);
+    z-index:1000;
 }
 
 .logo{
@@ -79,6 +80,64 @@ body{
     min-height:100vh;
 }
 
+.menu-btn{
+    display:block;
+    position:fixed;
+    top:15px;
+    left:15px;
+    z-index:1100;
+    background:#111827;
+    color:white;
+    border:none;
+    padding:10px 14px;
+    border-radius:10px;
+    font-size:20px;
+    cursor:pointer;
+}
+
+/* МОБИЛЬНАЯ ВЕРСИЯ */
+
+@media (max-width:768px){
+
+    .sidebar{
+        left:-240px;
+        transition:.3s;
+    }
+
+    .sidebar.active{
+        left:0;
+    }
+
+    .content{
+        margin-left:0;
+    }
+
+    .menu-btn{
+        display:block;
+        position:fixed;
+        top:15px;
+        left:15px;
+        z-index:1100;
+        background:#111827;
+        color:white;
+        border:none;
+        padding:10px 14px;
+        border-radius:10px;
+        font-size:20px;
+        cursor:pointer;
+    }
+
+    .logo{
+        font-size:24px;
+        padding:20px;
+    }
+
+    .profile-box{
+        margin:10px;
+    }
+
+}
+
 </style>
 
 {% block head %}{% endblock %}
@@ -86,7 +145,11 @@ body{
 </head>
 <body>
 
-<div class="sidebar">
+<button class="menu-btn" onclick="toggleMenu()">
+☰
+</button>
+
+<div class="sidebar" id="sidebar">
 
     <div class="logo">
         ⚡ PULSE
@@ -107,10 +170,11 @@ body{
     <a href="/chat">💬 Общий чат</a>
     <a href="/users">👥 Пользователи</a>
     <a href="/pulse">⚡ Pulse</a>
+    <a href="/profile">👤 Профиль</a>
     <a href="/login">🔑 Вход</a>
     <a href="/register">📝 Регистрация</a>
     <a href="/logout">🚪 Выход</a>
-    <a href="/profile">👤 Профиль</a>
+
 </div>
 
 <div class="content">
@@ -119,6 +183,16 @@ body{
 {% endblock %}
 
 </div>
+
+<script>
+
+function toggleMenu(){
+    document
+        .getElementById("sidebar")
+        .classList.toggle("active");
+}
+
+</script>
 
 </body>
 </html>
