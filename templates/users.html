@@ -151,7 +151,17 @@
             </div>
 
             <div class="status">
-                🟢 Онлайн
+
+            {% if user[1] %}
+
+            🟢 Онлайн
+
+            {% else %}
+
+            ⚫ Оффлайн
+
+            {% endif %}
+
             </div>
 
         </div>

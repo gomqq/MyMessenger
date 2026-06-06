@@ -7,6 +7,7 @@ app.secret_key = "123456789"
 
 
 def init_db():
+
     conn = sqlite3.connect("users.db")
     cursor = conn.cursor()
 
@@ -37,15 +38,28 @@ def init_db():
     )
     """)
 
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS online_users (
+        username TEXT PRIMARY KEY,
+        last_seen TEXT NOT NULL
+    )
+    """)
+
     conn.commit()
     conn.close()
 
 
 init_db()
 
+
 @app.route("/")
 def home():
+
+    if "username" in session:
+        return redirect("/profile")
+
     return redirect("/login")
+
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -59,6 +73,7 @@ def register():
         cursor = conn.cursor()
 
         try:
+
             cursor.execute(
                 "INSERT INTO users (username, password) VALUES (?, ?)",
                 (username, password)
@@ -69,12 +84,15 @@ def register():
             return redirect("/login")
 
         except Exception as e:
+
             return f"Ошибка: {e}"
 
         finally:
+
             conn.close()
 
     return render_template("register.html")
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -94,18 +112,36 @@ def login():
 
         user = cursor.fetchone()
 
-        conn.close()
-
-        print("Введено:", username, password)
-        print("Из базы:", user)
-
         if user and user[2] == password:
+            
             session["username"] = username
+            
+            print("LOGIN OK:", username)
+            
+            cursor.execute(
+                """
+                INSERT OR REPLACE INTO online_users
+                (username, last_seen)
+                VALUES (?, ?)
+                """,
+                (
+                    username,
+                    datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                )
+            )
+            
+            conn.commit()
+            print("ONLINE SAVED")
+            conn.close()
+
             return redirect("/chat")
+
+        conn.close()
 
         return "Неверный логин или пароль"
 
     return render_template("login.html")
+
 
 @app.route("/users")
 def users():
@@ -116,9 +152,15 @@ def users():
     conn = sqlite3.connect("users.db")
     cursor = conn.cursor()
 
-    cursor.execute(
-        "SELECT username FROM users ORDER BY username"
-    )
+    cursor.execute("""
+        SELECT
+            users.username,
+            online_users.username
+        FROM users
+        LEFT JOIN online_users
+        ON users.username = online_users.username
+        ORDER BY users.username
+    """)
 
     users = cursor.fetchall()
 
@@ -148,8 +190,16 @@ def chat():
             current_time = datetime.now().strftime("%H:%M")
 
             cursor.execute(
-                "INSERT INTO messages (username, text, created_at) VALUES (?, ?, ?)",
-                (session["username"], text, current_time)
+                """
+                INSERT INTO messages
+                (username, text, created_at)
+                VALUES (?, ?, ?)
+                """,
+                (
+                    session["username"],
+                    text,
+                    current_time
+                )
             )
 
             conn.commit()
@@ -157,13 +207,19 @@ def chat():
             return redirect("/chat")
 
     cursor.execute(
-        "SELECT username, text, created_at FROM messages ORDER BY id"
+        """
+        SELECT username, text, created_at
+        FROM messages
+        ORDER BY id
+        """
     )
+
     messages = cursor.fetchall()
 
     cursor.execute(
         "SELECT username FROM users ORDER BY username"
     )
+
     users = cursor.fetchall()
 
     conn.close()
@@ -174,15 +230,18 @@ def chat():
         username=session["username"],
         users=users
     )
+    @app.route("/messages")
+    def get_messages():
 
-@app.route("/messages")
-def get_messages():
-
-    conn = sqlite3.connect("users.db")
+        conn = sqlite3.connect("users.db")
     cursor = conn.cursor()
 
     cursor.execute(
-        "SELECT username, text, created_at FROM messages ORDER BY id"
+        """
+        SELECT username, text, created_at
+        FROM messages
+        ORDER BY id
+        """
     )
 
     messages = cursor.fetchall()
@@ -214,6 +273,7 @@ def get_messages():
             """
 
     return result
+
 
 @app.route("/dialog/<username>", methods=["GET", "POST"])
 def dialog(username):
@@ -247,12 +307,6 @@ def dialog(username):
             )
 
             conn.commit()
-            print(
-    "Сохранено:",
-    session["username"],
-    username,
-    text
-)
 
     cursor.execute(
         """
@@ -339,49 +393,83 @@ def dialog_messages(username):
             """
 
     return result
-
 @app.route("/allusers")
 def allusers():
+
     conn = sqlite3.connect("users.db")
     cursor = conn.cursor()
 
-    cursor.execute("SELECT username, password FROM users")
+    cursor.execute(
+        "SELECT username, password FROM users"
+    )
 
     users = cursor.fetchall()
 
     conn.close()
 
     return str(users)
+
+
 @app.route("/allprivate")
 def allprivate():
 
     conn = sqlite3.connect("users.db")
     cursor = conn.cursor()
 
-    cursor.execute("""
+    cursor.execute(
+        """
         SELECT sender, receiver, text
         FROM private_messages
-    """)
+        """
+    )
 
     data = cursor.fetchall()
 
     conn.close()
 
     return str(data)
+
+@app.route("/online")
+def online():
+
+    conn = sqlite3.connect("users.db")
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT * FROM online_users"
+    )
+
+    data = cursor.fetchall()
+
+    conn.close()
+
+    return str(data)
+
 @app.route("/whoami")
 def whoami():
-    return session.get("username", "not logged in")
+
+    return session.get(
+        "username",
+        "not logged in"
+    )
+
+
 @app.route("/test")
 def test():
+
     return "Работает"
 
-@app.route("/logout")
-def logout():
 
-    session.clear()
+@app.route("/profile")
+def profile():
 
-    return redirect("/login")
+    if "username" not in session:
+        return redirect("/login")
 
+    return render_template(
+        "profile.html",
+        username=session["username"]
+    )
 
 
 @app.route("/pulse")
@@ -406,6 +494,30 @@ def pulse():
         users=users,
         username=session["username"]
     )
+
+
+@app.route("/logout")
+def logout():
+
+    if "username" in session:
+
+        conn = sqlite3.connect("users.db")
+        cursor = conn.cursor()
+
+        cursor.execute(
+            """
+            DELETE FROM online_users
+            WHERE username=?
+            """,
+            (session["username"],)
+        )
+
+        conn.commit()
+        conn.close()
+
+    session.clear()
+
+    return redirect("/login")
 
 
 if __name__ == "__main__":

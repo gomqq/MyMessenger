@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}
+Профиль
+{% endblock %}
+
+{% block content %}
+
+<div style="padding:40px;">
+
+    <h1>👤 Профиль</h1>
+
+    <br>
+
+    <div style="
+        background:#111827;
+        padding:25px;
+        border-radius:20px;
+        max-width:500px;
+    ">
+
+        <h2>{{ username }}</h2>
+
+        <br>
+
+        <p>Статус: 🟢 Онлайн</p>
+
+        <p>Сервис: Pulse Messenger</p>
+
+    </div>
+
+</div>
+
+{% endblock %}

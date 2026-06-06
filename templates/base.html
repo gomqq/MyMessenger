@@ -22,7 +22,7 @@ body{
     position:fixed;
     left:0;
     top:0;
-    width:220px;
+    width:240px;
     height:100vh;
     background:#111827;
     border-right:1px solid rgba(255,255,255,.05);
@@ -32,8 +32,34 @@ body{
     padding:25px;
     text-align:center;
     font-size:30px;
+    font-weight:800;
+    letter-spacing:2px;
+
+    background:linear-gradient(
+        90deg,
+        #00e5ff,
+        #5b7fff
+    );
+
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.profile-box{
+    margin:15px;
+    padding:15px;
+    border-radius:14px;
+    background:#0f172a;
+}
+
+.profile-name{
     font-weight:bold;
-    color:#00e5ff;
+    margin-bottom:6px;
+}
+
+.profile-status{
+    color:#22c55e;
+    font-size:14px;
 }
 
 .sidebar a{
@@ -41,6 +67,7 @@ body{
     padding:15px 20px;
     color:white;
     text-decoration:none;
+    transition:.2s;
 }
 
 .sidebar a:hover{
@@ -48,7 +75,7 @@ body{
 }
 
 .content{
-    margin-left:220px;
+    margin-left:240px;
     min-height:100vh;
 }
 
@@ -65,13 +92,25 @@ body{
         ⚡ PULSE
     </div>
 
+    <div class="profile-box">
+
+        <div class="profile-name">
+            👤 {{ session.get("username", "Гость") }}
+        </div>
+
+        <div class="profile-status">
+            🟢 Онлайн
+        </div>
+
+    </div>
+
     <a href="/chat">💬 Общий чат</a>
     <a href="/users">👥 Пользователи</a>
     <a href="/pulse">⚡ Pulse</a>
     <a href="/login">🔑 Вход</a>
     <a href="/register">📝 Регистрация</a>
     <a href="/logout">🚪 Выход</a>
-
+    <a href="/profile">👤 Профиль</a>
 </div>
 
 <div class="content">
