@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>{% block title %}Pulse{% endblock %}</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Segoe UI',sans-serif;
+}
+
+body{
+    background:#0b1120;
+    color:white;
+}
+
+.sidebar{
+    position:fixed;
+    left:0;
+    top:0;
+    width:220px;
+    height:100vh;
+    background:#111827;
+    border-right:1px solid rgba(255,255,255,.05);
+}
+
+.logo{
+    padding:25px;
+    text-align:center;
+    font-size:30px;
+    font-weight:bold;
+    color:#00e5ff;
+}
+
+.sidebar a{
+    display:block;
+    padding:15px 20px;
+    color:white;
+    text-decoration:none;
+}
+
+.sidebar a:hover{
+    background:#1e293b;
+}
+
+.content{
+    margin-left:220px;
+    min-height:100vh;
+}
+
+</style>
+
+{% block head %}{% endblock %}
+
+</head>
+<body>
+
+<div class="sidebar">
+
+    <div class="logo">
+        ⚡ PULSE
+    </div>
+
+    <a href="/chat">💬 Общий чат</a>
+    <a href="/users">👥 Пользователи</a>
+    <a href="/pulse">⚡ Pulse</a>
+    <a href="/login">🔑 Вход</a>
+    <a href="/register">📝 Регистрация</a>
+    <a href="/logout">🚪 Выход</a>
+
+</div>
+
+<div class="content">
+
+{% block content %}
+{% endblock %}
+
+</div>
+
+</body>
+</html>

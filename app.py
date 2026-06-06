@@ -175,7 +175,6 @@ def chat():
         users=users
     )
 
-    
 @app.route("/messages")
 def get_messages():
 
@@ -194,19 +193,28 @@ def get_messages():
 
     for username, text, created_at in messages:
 
-        result += f"""
-        <div class="message">
-            <div class="author">
-                {username} • {created_at}
-            </div>
+        if username == session["username"]:
 
-            <div class="text">
-                {text}
+            result += f"""
+            <div class="my-message">
+                <div class="author">Вы</div>
+                <div>{text}</div>
+                <div class="time">{created_at}</div>
             </div>
-        </div>
-        """
+            """
+
+        else:
+
+            result += f"""
+            <div class="other-message">
+                <div class="author">{username}</div>
+                <div>{text}</div>
+                <div class="time">{created_at}</div>
+            </div>
+            """
 
     return result
+
 @app.route("/dialog/<username>", methods=["GET", "POST"])
 def dialog(username):
 

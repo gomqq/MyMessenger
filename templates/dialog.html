@@ -49,93 +49,71 @@ body{
     font-size:14px;
 }
 
-.logo span{
-    color:#00e5ff;
-
-    text-shadow:
-        0 0 10px #00e5ff,
-        0 0 20px #00e5ff,
-        0 0 40px #00e5ff;
-}
-
 .username{
     margin-top:8px;
     color:#94a3b8;
 }
 
 .messages{
-    max-width:1000px;
-    margin:auto;
-    padding:25px;
-    padding-bottom:120px;
+    padding:20px;
+    padding-bottom:100px;
+    display:flex;
+    flex-direction:column;
 }
 
 .my-message{
+    align-self:flex-end;
     max-width:70%;
-    margin-left:auto;
-    margin-bottom:15px;
-
-    padding:14px;
-
-    border-radius:18px;
-
-    background:linear-gradient(
-        135deg,
-        #5b7fff,
-        #00e5ff
-    );
+    background:#2563eb;
+    padding:12px 16px;
+    border-radius:18px 18px 4px 18px;
+    margin-bottom:10px;
+    color:white;
+    box-shadow:0 2px 8px rgba(0,0,0,.2);
 }
 
 .other-message{
+    align-self:flex-start;
     max-width:70%;
-    margin-right:auto;
-    margin-bottom:15px;
-
-    padding:14px;
-
-    border-radius:18px;
-
-    background:#131c31;
+    background:#1e293b;
+    padding:12px 16px;
+    border-radius:18px 18px 18px 4px;
+    margin-bottom:10px;
+    color:white;
+    box-shadow:0 2px 8px rgba(0,0,0,.2);
 }
 
 .author{
+    font-size:13px;
     font-weight:bold;
-    margin-bottom:5px;
+    color:#93c5fd;
+    margin-bottom:4px;
 }
 
 .time{
-    margin-top:5px;
-    font-size:12px;
-    opacity:.7;
+    font-size:11px;
+    color:#cbd5e1;
+    text-align:right;
+    margin-top:6px;
 }
 
 .form{
     position:fixed;
     bottom:0;
     left:0;
-
     width:100%;
-
     background:#111827;
-
     padding:15px;
-
     display:flex;
     gap:10px;
 }
 
 .form input{
-
     flex:1;
-
     padding:15px;
-
     border:none;
-
     border-radius:12px;
-
     background:#1e293b;
-
     color:white;
 }
 
@@ -144,15 +122,10 @@ body{
 }
 
 .form button{
-
     border:none;
-
     padding:15px 22px;
-
     border-radius:12px;
-
     color:white;
-
     cursor:pointer;
 
     background:linear-gradient(
@@ -163,15 +136,12 @@ body{
 }
 
 .back{
-
     position:fixed;
-
     left:20px;
     top:20px;
-
     color:#60a5fa;
-
     text-decoration:none;
+    z-index:999;
 }
 
 </style>
@@ -187,17 +157,16 @@ body{
 <div class="header">
 
 <div class="logo">
-    ⚡ PULSE
+🔥 ПРОВЕРКА
 </div>
 
 <div class="subtitle">
-    Connect Instantly
+Connect Instantly
 </div>
 
 <div class="username">
-    Диалог с {{ username }}
+Диалог с {{ username }}
 </div>
-```
 
 </div>
 
@@ -205,45 +174,43 @@ body{
 
 {% for sender, text, created_at in messages %}
 
-```
 {% if sender == session["username"] %}
 
-    <div class="my-message">
+<div class="my-message">
 
-        <div class="author">
-            Вы
-        </div>
+<div class="author">
+Вы
+</div>
 
-        <div>
-            {{ text }}
-        </div>
+<div>
+{{ text }}
+</div>
 
-        <div class="time">
-            {{ created_at }}
-        </div>
+<div class="time">
+{{ created_at }}
+</div>
 
-    </div>
+</div>
 
 {% else %}
 
-    <div class="other-message">
+<div class="other-message">
 
-        <div class="author">
-            {{ sender }}
-        </div>
+<div class="author">
+{{ sender }}
+</div>
 
-        <div>
-            {{ text }}
-        </div>
+<div>
+{{ text }}
+</div>
 
-        <div class="time">
-            {{ created_at }}
-        </div>
+<div class="time">
+{{ created_at }}
+</div>
 
-    </div>
+</div>
 
 {% endif %}
-```
 
 {% endfor %}
 
@@ -251,19 +218,16 @@ body{
 
 <form class="form" method="POST">
 
-```
 <input
-    type="text"
-    name="message"
-    placeholder="Напишите сообщение..."
-    autocomplete="off"
-    required
->
+type="text"
+name="message"
+placeholder="Напишите сообщение..."
+autocomplete="off"
+required>
 
 <button type="submit">
-    ➤
+➤
 </button>
-```
 
 </form>
 
@@ -271,11 +235,11 @@ body{
 
 function loadMessages() {
 
-    fetch("/dialog_messages/{{ username }}")
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById("messages").innerHTML = data;
-        });
+fetch("/dialog_messages/{{ username }}")
+.then(response => response.text())
+.then(data => {
+document.getElementById("messages").innerHTML = data;
+});
 
 }
 
