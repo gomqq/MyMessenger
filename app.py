@@ -171,7 +171,6 @@ def users():
         users=users
     )
 
-
 @app.route("/chat", methods=["GET", "POST"])
 def chat():
 
@@ -225,24 +224,22 @@ def chat():
     conn.close()
 
     return render_template(
-        "chat.html",
-        messages=messages,
-        username=session["username"],
-        users=users
-    )
-    @app.route("/messages")
-    def get_messages():
+    "chat.html",
+    messages=messages,
+    username=session["username"],
+    users=users
+)
+@app.route("/messages")
+def get_messages():
 
-        conn = sqlite3.connect("users.db")
+    conn = sqlite3.connect("users.db")
     cursor = conn.cursor()
 
-    cursor.execute(
-        """
+    cursor.execute("""
         SELECT username, text, created_at
         FROM messages
         ORDER BY id
-        """
-    )
+    """)
 
     messages = cursor.fetchall()
 
@@ -252,28 +249,18 @@ def chat():
 
     for username, text, created_at in messages:
 
-        if username == session["username"]:
-
-            result += f"""
-            <div class="my-message">
-                <div class="author">Вы</div>
-                <div>{text}</div>
-                <div class="time">{created_at}</div>
+        result += f"""
+        <div class="message">
+            <div class="author">
+                {username} • {created_at}
             </div>
-            """
-
-        else:
-
-            result += f"""
-            <div class="other-message">
-                <div class="author">{username}</div>
-                <div>{text}</div>
-                <div class="time">{created_at}</div>
+            <div>
+                {text}
             </div>
-            """
+        </div>
+        """
 
     return result
-
 
 @app.route("/dialog/<username>", methods=["GET", "POST"])
 def dialog(username):
