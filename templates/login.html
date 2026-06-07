@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Вход | Pulse</title>
 
 <style>
@@ -19,9 +19,9 @@ body{
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
-    overflow:hidden;
+    min-height:100vh;
     position:relative;
+    padding:15px;
 }
 
 body::before{
@@ -54,14 +54,12 @@ body::after{
     position:relative;
     z-index:2;
     width:430px;
+    max-width:95%;
     background:rgba(17,24,39,.85);
     backdrop-filter:blur(15px);
     border:1px solid rgba(255,255,255,.08);
     border-radius:24px;
     padding:40px;
-    box-shadow:
-        0 20px 60px rgba(0,0,0,.5),
-        0 0 30px rgba(88,101,242,.15);
 }
 
 .logo{
@@ -69,27 +67,12 @@ body::after{
     font-size:72px;
     color:#00e5ff;
     margin-bottom:10px;
-
-    text-shadow:
-        0 0 10px #00e5ff,
-        0 0 25px #00e5ff,
-        0 0 50px #00e5ff;
-
-    animation:pulse 2s infinite;
-}
-
-.title{
-    color:white;
-    text-align:center;
-    font-size:32px;
-    font-weight:700;
 }
 
 .subtitle{
     color:#94a3b8;
     text-align:center;
-    margin-top:8px;
-    margin-bottom:30px;
+    margin-bottom:25px;
 }
 
 .input{
@@ -103,28 +86,15 @@ body::after{
     margin-bottom:14px;
 }
 
-.input:focus{
-    outline:none;
-}
-
 .button{
     width:100%;
     border:none;
     border-radius:14px;
     padding:16px;
-    background:linear-gradient(
-90deg,
-#5b7fff,
-#00e5ff
-);
+    background:linear-gradient(90deg,#5b7fff,#00e5ff);
     color:white;
     font-size:16px;
     cursor:pointer;
-    transition:.2s;
-}
-
-.button:hover{
-    background:#4752c4;
 }
 
 .footer{
@@ -137,71 +107,58 @@ body::after{
     color:#60a5fa;
     text-decoration:none;
 }
-@keyframes pulse{
 
-    0%{
-        transform:scale(1);
-        opacity:1;
+@media (max-width:768px){
+
+    .card{
+        width:100%;
+        padding:25px;
     }
 
-    50%{
-        transform:scale(1.15);
-        opacity:.8;
-    }
-
-    100%{
-        transform:scale(1);
-        opacity:1;
+    .logo{
+        font-size:56px;
     }
 
 }
-</style>
 
+</style>
 </head>
 <body>
 
 <div class="card">
 
-```
-<div class="logo">
-◉
-</div>
+<div class="logo">◉</div>
 
-<div class="subtitle">
-Pulse
-</div>
+<div class="subtitle">Pulse</div>
 
-<div class="subtitle">
-Всегда на связи
-</div>
+<div class="subtitle">Всегда на связи</div>
 
 <form method="POST">
 
-    <input
-    class="input"
-    type="text"
-    name="username"
-    placeholder="Логин"
-    required>
+<input
+class="input"
+type="text"
+name="username"
+placeholder="Логин"
+required>
 
-    <input
-    class="input"
-    type="password"
-    name="password"
-    placeholder="Пароль"
-    required>
+<input
+class="input"
+type="password"
+name="password"
+placeholder="Пароль"
+required>
 
-    <button class="button" type="submit">
-        Войти
-    </button>
+<button class="button" type="submit">
+Войти
+</button>
 
 </form>
 
 <div class="footer">
-    Нет аккаунта?
-    <a href="/register">Создать аккаунт</a>
+Нет аккаунта?
+<a href="/register">Создать аккаунт</a>
 </div>
-```
 
 </div>
 
