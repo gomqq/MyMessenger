@@ -475,25 +475,11 @@ def profile():
 @app.route("/pulse")
 def pulse():
 
-    if "username" not in session:
-        return redirect("/login")
-
-    conn = sqlite3.connect("users.db")
-    cursor = conn.cursor()
-
-    cursor.execute(
-        "SELECT username FROM users ORDER BY username"
-    )
-
-    users = cursor.fetchall()
-
-    conn.close()
-
-    return render_template(
-        "pulse.html",
-        users=users,
-        username=session["username"]
-    )
+    return """
+    <h1 style="background:black;color:white;padding:40px;">
+    PULSE WORKS
+    </h1>
+    """
 
 
 @app.route("/logout")
