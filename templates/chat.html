@@ -121,7 +121,7 @@
 
         {% for username, text, created_at in messages %}
 
-        <div class="message">
+        <div class="message {% if username == session['username'] %}right{% else %}left{% endif %}">
 
             <div class="author">
                 {{ username }} • {{ created_at }}
