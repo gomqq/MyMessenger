@@ -1,9 +1,14 @@
 from flask import Flask, render_template, request, redirect, session
 import sqlite3
 from datetime import datetime
+import os
+from werkzeug.utils import secure_filename
+
 
 app = Flask(__name__)
 app.secret_key = "123456789"
+UPLOAD_FOLDER = "static/avatars"
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 
 def init_db():
@@ -18,6 +23,13 @@ def init_db():
         password TEXT NOT NULL
     )
     """)
+
+    try:
+        cursor.execute(
+            "ALTER TABLE users ADD COLUMN avatar TEXT DEFAULT 'default.png'"
+        )
+    except:
+        pass
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS messages (
@@ -447,15 +459,63 @@ def test():
     return "Работает"
 
 
-@app.route("/profile")
+@app.route("/profile", methods=["GET", "POST"])
 def profile():
 
     if "username" not in session:
         return redirect("/login")
 
+    if request.method == "POST":
+
+        file = request.files.get("avatar")
+
+        if file and file.filename:
+
+            filename = secure_filename(
+                session["username"] + "_" + file.filename
+            )
+
+            filepath = os.path.join(
+                app.config["UPLOAD_FOLDER"],
+                filename
+            )
+
+            file.save(filepath)
+
+            conn = sqlite3.connect("users.db")
+            cursor = conn.cursor()
+
+            cursor.execute(
+                "UPDATE users SET avatar=? WHERE username=?",
+                (filename, session["username"])
+            )
+
+            conn.commit()
+            conn.close()
+
+            return redirect("/profile")
+
+    conn = sqlite3.connect("users.db")
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT avatar FROM users WHERE username=?",
+        (session["username"],)
+    )
+
+    result = cursor.fetchone()
+
+    avatar = "default.png"
+
+    if result and result[0]:
+        avatar = result[0]
+
+    conn.close()
+
     return render_template(
         "profile.html",
-        username=session["username"]
+        username=session["username"],
+        avatar=avatar
     )
 
 

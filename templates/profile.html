@@ -6,28 +6,83 @@
 
 {% block content %}
 
-<div style="padding:40px;">
+<div style="
+    padding:40px;
+    display:flex;
+    justify-content:center;
+">
 
-    <h1>👤 Профиль</h1>
+```
+<div style="
+    background:#111827;
+    padding:30px;
+    border-radius:20px;
+    width:100%;
+    max-width:500px;
+    text-align:center;
+">
 
-    <br>
+    <h1 style="margin-bottom:20px;">
+        👤 Профиль
+    </h1>
 
-    <div style="
-        background:#111827;
-        padding:25px;
-        border-radius:20px;
-        max-width:500px;
+    <img
+    src="{{ url_for('static', filename='avatars/' + avatar) }}"
+    style="
+        width:120px;
+        height:120px;
+        border-radius:50%;
+        object-fit:cover;
+        border:3px solid #00e5ff;
+        margin-bottom:20px;
     ">
 
-        <h2>{{ username }}</h2>
+    <h2 style="margin-bottom:15px;">
+        {{ username }}
+    </h2>
+
+    <p style="margin-bottom:10px;">
+        🟢 Онлайн
+    </p>
+
+    <p style="margin-bottom:25px;">
+        Pulse Messenger
+    </p>
+
+    <form method="POST" enctype="multipart/form-data">
+
+        <input
+        type="file"
+        name="avatar"
+        style="
+            margin-bottom:20px;
+            color:white;
+        ">
 
         <br>
 
-        <p>Статус: 🟢 Онлайн</p>
+        <button
+        type="submit"
+        style="
+            background:linear-gradient(
+                90deg,
+                #5b7fff,
+                #00e5ff
+            );
+            border:none;
+            padding:12px 25px;
+            border-radius:12px;
+            color:white;
+            cursor:pointer;
+            font-size:15px;
+        ">
+            📷 Загрузить аватар
+        </button>
 
-        <p>Сервис: Pulse Messenger</p>
+    </form>
 
-    </div>
+</div>
+```
 
 </div>
 

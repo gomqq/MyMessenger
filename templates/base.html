@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+<link rel="manifest" href="/static/manifest.json">
+<meta name="theme-color" content="#0b1120">
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{% block title %}Pulse{% endblock %}</title>
@@ -170,6 +173,10 @@ function toggleMenu(){
     document.getElementById("sidebar").classList.toggle("active");
 }
 </script>
-
+<script>
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("/static/sw.js");
+}
+</script>
 </body>
 </html>
