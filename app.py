@@ -261,16 +261,18 @@ def get_messages():
 
     for username, text, created_at in messages:
 
-        result += f"""
-        <div class="message">
-            <div class="author">
-                {username} • {created_at}
-            </div>
-            <div>
-                {text}
-            </div>
+        side = "right" if username == session["username"] else "left"
+
+    result += f"""
+    <div class="message {side}">
+        <div class="author">
+            {username} • {created_at}
         </div>
-        """
+        <div>
+            {text}
+        </div>
+    </div>
+    """
 
     return result
 
