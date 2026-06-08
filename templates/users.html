@@ -8,7 +8,7 @@
 <style>
 
 .header{
-    padding:25px;
+    padding:12px;
     text-align:center;
     border-bottom:1px solid rgba(255,255,255,.05);
     background:#111827;
@@ -28,8 +28,9 @@
 }
 
 .subtitle{
-    margin-top:8px;
+    margin-top:4px;
     color:#94a3b8;
+    font-size:13px;
 }
 
 .users{
@@ -110,8 +111,8 @@
     </div>
 
     <div class="subtitle">
-        Ваши контакты
-    </div>
+    Онлайн: {{ users|length }}
+</div>
 
 </div>
 
