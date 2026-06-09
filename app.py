@@ -10,6 +10,8 @@ app.secret_key = "123456789"
 UPLOAD_FOLDER = "static/avatars"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
+VOICE_FOLDER = "static/voices"
+app.config["VOICE_FOLDER"] = VOICE_FOLDER
 
 def init_db():
 
@@ -39,6 +41,13 @@ def init_db():
         created_at TEXT NOT NULL
     )
     """)
+    
+    try:
+        cursor.execute(
+        "ALTER TABLE messages ADD COLUMN voice TEXT"
+    )
+    except:
+        pass
 
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS private_messages (
@@ -182,6 +191,51 @@ def users():
         "users.html",
         users=users
     )
+@app.route("/upload_voice", methods=["POST"])
+def upload_voice():
+
+    if "username" not in session:
+        return "error"
+
+    file = request.files.get("voice")
+
+    if not file:
+        return "error"
+
+    filename = secure_filename(
+        f"{session['username']}_{datetime.now().timestamp()}.webm"
+    )
+
+    filepath = os.path.join(
+        app.config["VOICE_FOLDER"],
+        filename
+    )
+
+    file.save(filepath)
+
+    conn = sqlite3.connect("users.db")
+    cursor = conn.cursor()
+
+    current_time = datetime.now().strftime("%H:%M")
+
+    cursor.execute(
+        """
+        INSERT INTO messages
+        (username, text, created_at, voice)
+        VALUES (?, ?, ?, ?)
+        """,
+        (
+            session["username"],
+            "",
+            current_time,
+            filename
+        )
+    )
+
+    conn.commit()
+    conn.close()
+
+    return "ok"
 
 @app.route("/chat", methods=["GET", "POST"])
 def chat():
@@ -248,10 +302,10 @@ def get_messages():
     cursor = conn.cursor()
 
     cursor.execute("""
-        SELECT username, text, created_at
-        FROM messages
-        ORDER BY id
-    """)
+    SELECT username, text, created_at, voice
+    FROM messages
+    ORDER BY id
+""")
 
     messages = cursor.fetchall()
 
@@ -259,7 +313,7 @@ def get_messages():
 
     result = ""
 
-    for username, text, created_at in messages:
+    for username, text, created_at, voice in messages:
 
         side = "right" if username == session["username"] else "left"
 
