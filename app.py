@@ -13,12 +13,11 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 VOICE_FOLDER = "static/voices"
 app.config["VOICE_FOLDER"] = VOICE_FOLDER
 
-os.makedirs("static/images", exist_ok=True)
-os.makedirs("static/voices", exist_ok=True)
-
 IMAGE_FOLDER = "static/images"
 app.config["IMAGE_FOLDER"] = IMAGE_FOLDER
 
+os.makedirs("static/images", exist_ok=True)
+os.makedirs("static/voices", exist_ok=True)
 def init_db():
 
     conn = sqlite3.connect("users.db")
