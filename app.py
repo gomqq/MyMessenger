@@ -13,6 +13,9 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 VOICE_FOLDER = "static/voices"
 app.config["VOICE_FOLDER"] = VOICE_FOLDER
 
+IMAGE_FOLDER = "static/images"
+app.config["IMAGE_FOLDER"] = IMAGE_FOLDER
+
 def init_db():
 
     conn = sqlite3.connect("users.db")
@@ -32,7 +35,14 @@ def init_db():
         )
     except:
         pass
-
+    
+    try:
+        cursor.execute(
+        "ALTER TABLE messages ADD COLUMN image TEXT"
+    )
+    except:
+        pass
+    
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS messages (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -237,6 +247,52 @@ def upload_voice():
 
     return "ok"
 
+@app.route("/upload_image", methods=["POST"])
+def upload_image():
+
+    if "username" not in session:
+        return "error"
+
+    file = request.files.get("image")
+
+    if not file:
+        return "error"
+
+    filename = secure_filename(
+        f"{session['username']}_{datetime.now().timestamp()}_{file.filename}"
+    )
+
+    filepath = os.path.join(
+        app.config["IMAGE_FOLDER"],
+        filename
+    )
+
+    file.save(filepath)
+
+    conn = sqlite3.connect("users.db")
+    cursor = conn.cursor()
+
+    current_time = datetime.now().strftime("%H:%M")
+
+    cursor.execute(
+        """
+        INSERT INTO messages
+        (username, text, created_at, image)
+        VALUES (?, ?, ?, ?)
+        """,
+        (
+            session["username"],
+            "",
+            current_time,
+            filename
+        )
+    )
+
+    conn.commit()
+    conn.close()
+
+    return "ok"
+
 @app.route("/chat", methods=["GET", "POST"])
 def chat():
 
@@ -302,10 +358,10 @@ def get_messages():
     cursor = conn.cursor()
 
     cursor.execute("""
-    SELECT username, text, created_at, voice
-    FROM messages
-    ORDER BY id
-""")
+        SELECT username, text, created_at, voice, image
+        FROM messages
+        ORDER BY id
+    """)
 
     messages = cursor.fetchall()
 
@@ -313,20 +369,59 @@ def get_messages():
 
     result = ""
 
-    for username, text, created_at, voice in messages:
+    for username, text, created_at, voice, image in messages:
 
         side = "right" if username == session["username"] else "left"
 
-        result += f"""
-        <div class="message {side}">
-            <div class="author">
-                {username} • {created_at}
+        if image:
+
+            result += f"""
+            <div class="message {side}">
+                <div class="author">
+                    {username} • {created_at}
+                </div>
+
+                <img
+                    src="/static/images/{image}"
+                    style="
+                        max-width:250px;
+                        border-radius:12px;
+                        margin-top:5px;
+                    "
+                >
+
             </div>
-            <div>
-                {text}
+            """
+
+        elif voice:
+
+            result += f"""
+            <div class="message {side}">
+                <div class="author">
+                    {username} • {created_at}
+                </div>
+
+                <audio controls>
+                    <source src="/static/voices/{voice}" type="audio/webm">
+                </audio>
+
             </div>
-        </div>
-        """
+            """
+
+        else:
+
+            result += f"""
+            <div class="message {side}">
+                <div class="author">
+                    {username} • {created_at}
+                </div>
+
+                <div>
+                    {text}
+                </div>
+
+            </div>
+            """
 
     return result
 
