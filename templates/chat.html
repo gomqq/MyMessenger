@@ -53,6 +53,17 @@
     opacity:.8;
 }
 
+.voice-btn{
+    width:55px;
+    height:55px;
+    border:none;
+    border-radius:50%;
+    background:#ef4444 !important;
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+}
+
 .form{
     display:flex;
     gap:10px;
@@ -147,6 +158,14 @@
 
     <form class="form" method="POST">
 
+    <button
+        type="button"
+        id="recordBtn"
+        class="voice-btn"
+    >
+        🎤
+    </button>
+
     <input
         type="text"
         name="message"
@@ -176,6 +195,53 @@ function loadMessages(){
 }
 
 setInterval(loadMessages, 2000);
+
+let mediaRecorder;
+let chunks = [];
+
+const recordBtn = document.getElementById("recordBtn");
+
+recordBtn.addEventListener("click", async () => {
+
+    if (!mediaRecorder || mediaRecorder.state === "inactive") {
+
+        const stream = await navigator.mediaDevices.getUserMedia({
+            audio:true
+        });
+
+        mediaRecorder = new MediaRecorder(stream);
+
+        chunks = [];
+
+        mediaRecorder.ondataavailable = e => {
+            chunks.push(e.data);
+        };
+
+        mediaRecorder.onstop = () => {
+
+            const blob = new Blob(chunks,{
+                type:"audio/webm"
+            });
+
+            console.log(blob);
+
+            alert("Голосовое сообщение записано 🎤");
+
+        };
+
+        mediaRecorder.start();
+
+        recordBtn.innerHTML = "⏹";
+
+    } else {
+
+        mediaRecorder.stop();
+
+        recordBtn.innerHTML = "🎤";
+
+    }
+
+});
 
 </script>
 
