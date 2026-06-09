@@ -62,20 +62,27 @@
 
 .form input{
     flex:1;
-    padding:15px;
+    padding:16px 20px;
     border:none;
-    border-radius:12px;
+    border-radius:30px;
     background:#1e293b;
     color:white;
     font-size:16px;
+    outline:none;
 }
 
 .form button{
+    width:55px;
+    height:55px;
     border:none;
-    padding:15px 25px;
-    border-radius:12px;
-    background:#22c55e;
+    border-radius:50%;
+    background:linear-gradient(
+        135deg,
+        #00e5ff,
+        #5b7fff
+    );
     color:white;
+    font-size:22px;
     cursor:pointer;
 }
 
@@ -140,19 +147,19 @@
 
     <form class="form" method="POST">
 
-        <input
-            type="text"
-            name="message"
-            placeholder="Введите сообщение..."
-            autocomplete="off"
-            required
-        >
+    <input
+        type="text"
+        name="message"
+        placeholder="💬 Написать сообщение..."
+        autocomplete="off"
+        required
+    >
 
-        <button type="submit">
-            Отправить
-        </button>
+    <button type="submit">
+        ➤
+    </button>
 
-    </form>
+</form>
 
 </div>
 
