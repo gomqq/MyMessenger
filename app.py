@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, session
 import sqlite3
+from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
@@ -24,20 +25,37 @@ def init_db():
     cursor = conn.cursor()
 
     cursor.execute("""
-    CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        username TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL
-    )
-    """)
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    username TEXT UNIQUE NOT NULL,
+    phone TEXT UNIQUE NOT NULL,
+    password TEXT NOT NULL,
+    avatar TEXT DEFAULT 'default.png',
+    created_at TEXT NOT NULL
+)
+""")
 
-    try:
-        cursor.execute(
-            "ALTER TABLE users ADD COLUMN avatar TEXT DEFAULT 'default.png'"
-        )
-    except:
-        pass
-    
+try:
+    cursor.execute(
+        "ALTER TABLE users ADD COLUMN phone TEXT"
+    )
+except:
+    pass
+
+try:
+    cursor.execute(
+        "ALTER TABLE users ADD COLUMN created_at TEXT"
+    )
+except:
+    pass
+
+try:
+    cursor.execute(
+        "ALTER TABLE users ADD COLUMN avatar TEXT DEFAULT 'default.png'"
+    )
+except:
+    pass
+
     try:
         cursor.execute(
         "ALTER TABLE messages ADD COLUMN image TEXT"
@@ -99,8 +117,15 @@ def register():
 
     if request.method == "POST":
 
-        username = request.form["username"]
+        username = request.form["username"].strip()
+        phone = request.form["phone"].strip()
         password = request.form["password"]
+        confirm_password = request.form["confirm_password"]
+
+        if password != confirm_password:
+            return "Пароли не совпадают."
+
+        hashed_password = generate_password_hash(password)
 
         conn = sqlite3.connect("users.db")
         cursor = conn.cursor()
@@ -108,17 +133,26 @@ def register():
         try:
 
             cursor.execute(
-                "INSERT INTO users (username, password) VALUES (?, ?)",
-                (username, password)
+                """
+                INSERT INTO users
+                (username, phone, password, created_at)
+                VALUES (?, ?, ?, ?)
+                """,
+                (
+                    username,
+                    phone,
+                    hashed_password,
+                    datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                )
             )
 
             conn.commit()
 
             return redirect("/login")
 
-        except Exception as e:
+        except sqlite3.IntegrityError:
 
-            return f"Ошибка: {e}"
+            return "Пользователь или номер телефона уже существует."
 
         finally:
 
@@ -139,13 +173,13 @@ def login():
         cursor = conn.cursor()
 
         cursor.execute(
-            "SELECT * FROM users WHERE username=?",
-            (username,)
-        )
+    "SELECT * FROM users WHERE username=? OR phone=?",
+    (username, username)
+)
 
         user = cursor.fetchone()
 
-        if user and user[2] == password:
+        if user and check_password_hash(user[2], password):
             
             session["username"] = username
             
