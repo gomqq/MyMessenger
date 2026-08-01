@@ -1,166 +1,254 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Вход | Pulse</title>
 
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
-}
+    <title>Pulse | Вход</title>
 
-body{
-    background:#0b1120;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
-    position:relative;
-    padding:15px;
-}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-body::before{
-    content:"";
-    position:absolute;
-    width:500px;
-    height:500px;
-    background:#3b82f6;
-    border-radius:50%;
-    filter:blur(180px);
-    top:-150px;
-    left:-150px;
-    opacity:.35;
-}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-body::after{
-    content:"";
-    position:absolute;
-    width:500px;
-    height:500px;
-    background:#8b5cf6;
-    border-radius:50%;
-    filter:blur(180px);
-    bottom:-150px;
-    right:-150px;
-    opacity:.35;
-}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 
-.card{
-    position:relative;
-    z-index:2;
-    width:430px;
-    max-width:95%;
-    background:rgba(17,24,39,.85);
-    backdrop-filter:blur(15px);
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:24px;
-    padding:40px;
-}
-
-.logo{
-    text-align:center;
-    font-size:72px;
-    color:#00e5ff;
-    margin-bottom:10px;
-}
-
-.subtitle{
-    color:#94a3b8;
-    text-align:center;
-    margin-bottom:25px;
-}
-
-.input{
-    width:100%;
-    background:#1e293b;
-    border:none;
-    border-radius:14px;
-    padding:16px;
-    color:white;
-    font-size:16px;
-    margin-bottom:14px;
-}
-
-.button{
-    width:100%;
-    border:none;
-    border-radius:14px;
-    padding:16px;
-    background:linear-gradient(90deg,#5b7fff,#00e5ff);
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-}
-
-.footer{
-    margin-top:20px;
-    text-align:center;
-    color:#94a3b8;
-}
-
-.footer a{
-    color:#60a5fa;
-    text-decoration:none;
-}
-
-@media (max-width:768px){
-
-    .card{
-        width:100%;
-        padding:25px;
-    }
-
-    .logo{
-        font-size:56px;
-    }
-
-}
-
-</style>
 </head>
+
 <body>
 
-<div class="card">
+<div class="background">
 
-<div class="logo">◉</div>
+    <div class="blur blur-1"></div>
+    <div class="blur blur-2"></div>
 
-<div class="subtitle">Pulse</div>
+</div>
 
-<div class="subtitle">Всегда на связи</div>
+<div class="login-wrapper">
 
-<form method="POST">
+    <div class="left-panel">
 
-<input
-class="input"
-type="text"
-name="username"
-placeholder="Логин"
-required>
+        <div class="logo">
 
-<input
-class="input"
-type="password"
-name="password"
-placeholder="Пароль"
-required>
+            <div class="logo-icon">
 
-<button class="button" type="submit">
-Войти
+                ⚡
+
+            </div>
+
+            <h1>Pulse</h1>
+
+        </div>
+
+        <h2>
+
+            Общение нового поколения
+
+        </h2>
+
+        <p>
+
+            Быстро.
+            Красиво.
+            Безопасно.
+
+        </p>
+
+        <div class="features">
+
+            <div class="feature">
+
+                💬 Современный мессенджер
+
+            </div>
+
+            <div class="feature">
+
+                🤖 AI помощник
+
+            </div>
+
+            <div class="feature">
+
+                🔒 Сквозное шифрование
+
+            </div>
+
+            <div class="feature">
+
+                ⚡ Мгновенные сообщения
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="right-panel">
+
+        <div class="login-card">
+
+            <h2>
+
+                Добро пожаловать 👋
+
+            </h2>
+
+            <p>
+
+                Войдите в свой аккаунт
+
+            </p>
+
+            <form method="POST">
+                <div class="input-group">
+
+    <label>Номер телефона</label>
+
+    <input
+        type="text"
+        name="username"
+        class="input"
+        placeholder="+41 79 123 45 67"
+        required>
+
+</div>
+
+<div class="input-group">
+
+    <label>Пароль</label>
+
+    <div class="password-box">
+
+        <input
+            type="password"
+            name="password"
+            class="input"
+            id="password"
+            placeholder="Введите пароль"
+            required>
+
+        <button
+            type="button"
+            class="show-password"
+            onclick="togglePassword()">
+
+            👁
+
+        </button>
+
+    </div>
+
+</div>
+
+<div class="login-options">
+
+    <label class="remember">
+
+        <input
+            type="checkbox">
+
+        <span>
+
+            Запомнить меня
+
+        </span>
+
+    </label>
+
+    <a href="#">
+
+        Забыли пароль?
+
+    </a>
+
+</div>
+
+<button
+class="login-button"
+type="submit">
+
+    Войти →
+
 </button>
 
+<div class="divider">
+
+    <span>
+
+        или
+
+    </span>
+
+</div>
+
+<div class="social-buttons">
+
+    <button
+    type="button"
+    class="google">
+
+        Google
+
+    </button>
+
+    <button
+    type="button"
+    class="apple">
+
+        Apple
+
+    </button>
+
+</div>
+
+<div class="register-link">
+
+    Нет аккаунта?
+
+    <a href="/register">
+
+        Создать аккаунт
+
+    </a>
+
+</div>
 </form>
 
-<div class="footer">
-Нет аккаунта?
-<a href="/register">Создать аккаунт</a>
+<div class="security-text">
+
+    🔒 Ваши данные защищены сквозным шифрованием
+
 </div>
 
 </div>
+
+</div>
+
+</div>
+
+<script>
+
+function togglePassword(){
+
+    const password = document.getElementById("password");
+
+    if(password.type === "password"){
+
+        password.type = "text";
+
+    }else{
+
+        password.type = "password";
+
+    }
+
+}
+
+</script>
 
 </body>
+
 </html>
