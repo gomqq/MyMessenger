@@ -1,172 +1,253 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Регистрация | Pulse</title>
 
-<style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:'Segoe UI',sans-serif;
-}
+    <title>Pulse | Регистрация</title>
 
-body{
-    background:#0b1120;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:100vh;
-    position:relative;
-    padding:15px;
-}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-body::before{
-    content:"";
-    position:absolute;
-    width:500px;
-    height:500px;
-    background:#3b82f6;
-    border-radius:50%;
-    filter:blur(180px);
-    top:-150px;
-    left:-150px;
-    opacity:.35;
-}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-body::after{
-    content:"";
-    position:absolute;
-    width:500px;
-    height:500px;
-    background:#8b5cf6;
-    border-radius:50%;
-    filter:blur(180px);
-    bottom:-150px;
-    right:-150px;
-    opacity:.35;
-}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
 
-.card{
-    position:relative;
-    z-index:2;
-    width:430px;
-    max-width:95%;
-    background:rgba(17,24,39,.85);
-    backdrop-filter:blur(15px);
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:24px;
-    padding:40px;
-}
-
-.logo{
-    text-align:center;
-    font-size:72px;
-    color:#00e5ff;
-    margin-bottom:10px;
-}
-
-.title{
-    color:white;
-    text-align:center;
-    font-size:34px;
-    font-weight:700;
-    margin-bottom:25px;
-}
-
-.input{
-    width:100%;
-    background:#1e293b;
-    border:1px solid #24314f;
-    border-radius:14px;
-    padding:16px;
-    color:white;
-    font-size:16px;
-    margin-bottom:14px;
-}
-
-.button{
-    width:100%;
-    border:none;
-    border-radius:14px;
-    padding:16px;
-    background:linear-gradient(90deg,#5b7fff,#00e5ff);
-    color:white;
-    font-size:16px;
-    cursor:pointer;
-}
-
-.footer{
-    margin-top:20px;
-    text-align:center;
-    color:#94a3b8;
-}
-
-.footer a{
-    color:#60a5fa;
-    text-decoration:none;
-}
-
-@media (max-width:768px){
-
-    .card{
-        width:100%;
-        padding:25px;
-    }
-
-    .logo{
-        font-size:56px;
-    }
-
-    .title{
-        font-size:28px;
-    }
-
-}
-
-</style>
 </head>
+
 <body>
+<div class="background">
 
-<div class="card">
+    <div class="blur blur-one"></div>
 
-<div class="logo">◉</div>
+    <div class="blur blur-two"></div>
 
-<div class="title">
-Pulse
 </div>
 
-<form method="POST">
+<div class="page">
 
-<input
-class="input"
-type="text"
-name="username"
-placeholder="Придумайте логин"
-required>
+    <div class="brand">
 
-<input
-class="input"
-type="password"
-name="password"
-placeholder="Придумайте пароль"
-required>
+        <div class="logo">
 
-<button class="button" type="submit">
-Создать аккаунт
+            <img
+                src="{{ url_for('static', filename='icons/pulse-logo.svg') }}"
+                alt="Pulse">
+
+        </div>
+
+        <h1>Pulse</h1>
+
+        <p>
+
+            Создайте аккаунт и начните общение
+
+        </p>
+
+        <div class="features">
+                <div class="feature">
+
+        💬 Общайтесь без ограничений
+
+    </div>
+
+    <div class="feature">
+
+        📞 Голосовые и видеозвонки
+
+    </div>
+
+    <div class="feature">
+
+        🤖 Встроенный AI-помощник
+
+    </div>
+
+    <div class="feature">
+
+        🔒 Сквозное шифрование
+
+    </div>
+
+    <div class="feature">
+
+        ⚡ Быстрая синхронизация
+
+    </div>
+
+</div>
+
+</div>
+
+<div class="login-card">
+
+    <h2>
+
+        Создать аккаунт
+
+    </h2>
+
+    <p class="subtitle">
+
+        Заполните данные для регистрации
+
+    </p>
+
+    <form method="POST">
+        <div class="input-group">
+
+    <label for="username">
+
+        Имя пользователя
+
+    </label>
+
+    <input
+        id="username"
+        class="input"
+        type="text"
+        name="username"
+        placeholder="Введите имя"
+        autocomplete="username"
+        required>
+
+</div>
+
+<div class="input-group">
+
+    <label for="phone">
+
+        Номер телефона
+
+    </label>
+
+    <input
+        id="phone"
+        class="input"
+        type="tel"
+        name="phone"
+        placeholder="+41 79 123 45 67"
+        autocomplete="tel"
+        required>
+
+</div>
+
+<div class="input-group">
+
+    <label for="password">
+
+        Пароль
+
+    </label>
+
+    <div class="password-box">
+
+        <input
+            id="password"
+            class="input"
+            type="password"
+            name="password"
+            placeholder="Придумайте пароль"
+            autocomplete="new-password"
+            required>
+
+        <button
+            type="button"
+            class="show-password"
+            onclick="togglePassword()">
+
+            👁
+
+        </button>
+
+    </div>
+
+</div>
+<div class="input-group">
+
+    <label for="confirm_password">
+
+        Подтвердите пароль
+
+    </label>
+
+    <div class="password-box">
+
+        <input
+            id="confirm_password"
+            class="input"
+            type="password"
+            name="confirm_password"
+            placeholder="Повторите пароль"
+            autocomplete="new-password"
+            required>
+
+        <button
+            type="button"
+            class="show-password"
+            onclick="toggleConfirmPassword()">
+
+            👁
+
+        </button>
+
+    </div>
+
+</div>
+
+<div class="login-options">
+
+    <label class="remember">
+
+        <input
+            type="checkbox"
+            required>
+
+        <span>
+
+            Я принимаю условия использования
+
+        </span>
+
+    </label>
+
+</div>
+
+<button
+    class="login-button"
+    type="submit">
+
+    Создать аккаунт →
+
 </button>
+
+<div class="register-link">
+
+    Уже есть аккаунт?
+
+    <a href="/login">
+
+        Войти
+
+    </a>
+
+</div>
+
+<div class="security-text">
+
+    🔒 Ваш аккаунт будет защищён сквозным шифрованием
+
+</div>
 
 </form>
 
-<div class="footer">
-Уже есть аккаунт?
-<a href="/login">Войти</a>
 </div>
 
 </div>
 
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
 </body>
+
 </html>
