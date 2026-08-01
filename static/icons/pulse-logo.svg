@@ -1,0 +1,27 @@
+<svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+
+    <defs>
+
+        <linearGradient id="pulseGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+
+            <stop offset="0%" stop-color="#5B7FFF"/>
+
+            <stop offset="100%" stop-color="#00D4FF"/>
+
+        </linearGradient>
+
+    </defs>
+
+    <rect
+        x="8"
+        y="8"
+        width="112"
+        height="112"
+        rx="30"
+        fill="url(#pulseGradient)"/>
+
+    <path
+        d="M42 88V40H66C80 40 88 47 88 59C88 71 80 78 66 78H54V88Z"
+        fill="white"/>
+
+</svg>
