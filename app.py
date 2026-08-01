@@ -21,64 +21,36 @@ os.makedirs("static/images", exist_ok=True)
 os.makedirs("static/voices", exist_ok=True)
 def init_db():
 
+   def init_db():
+
     conn = sqlite3.connect("users.db")
     cursor = conn.cursor()
 
+    # Пользователи
     cursor.execute("""
-CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT UNIQUE NOT NULL,
-    phone TEXT UNIQUE NOT NULL,
-    password TEXT NOT NULL,
-    avatar TEXT DEFAULT 'default.png',
-    created_at TEXT NOT NULL
-)
-""")
-
-try:
-    cursor.execute(
-        "ALTER TABLE users ADD COLUMN phone TEXT"
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE NOT NULL,
+        phone TEXT UNIQUE NOT NULL,
+        password TEXT NOT NULL,
+        avatar TEXT DEFAULT 'default.png',
+        created_at TEXT NOT NULL
     )
-except:
-    pass
+    """)
 
-try:
-    cursor.execute(
-        "ALTER TABLE users ADD COLUMN created_at TEXT"
-    )
-except:
-    pass
-
-try:
-    cursor.execute(
-        "ALTER TABLE users ADD COLUMN avatar TEXT DEFAULT 'default.png'"
-    )
-except:
-    pass
-
-    try:
-        cursor.execute(
-        "ALTER TABLE messages ADD COLUMN image TEXT"
-    )
-    except:
-        pass
-    
+    # Общий чат
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS messages (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT NOT NULL,
         text TEXT NOT NULL,
+        image TEXT,
+        voice TEXT,
         created_at TEXT NOT NULL
     )
     """)
-    
-    try:
-        cursor.execute(
-        "ALTER TABLE messages ADD COLUMN voice TEXT"
-    )
-    except:
-        pass
 
+    # Личные сообщения
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS private_messages (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -89,6 +61,7 @@ except:
     )
     """)
 
+    # Онлайн пользователи
     cursor.execute("""
     CREATE TABLE IF NOT EXISTS online_users (
         username TEXT PRIMARY KEY,
@@ -98,8 +71,7 @@ except:
 
     conn.commit()
     conn.close()
-
-
+   
 init_db()
 
 
@@ -179,23 +151,23 @@ def login():
 
         user = cursor.fetchone()
 
-        if user and check_password_hash(user[2], password):
+        if user and check_password_hash(user[3], password):
             
-            session["username"] = username
+            session["username"] = user[1]
             
-            print("LOGIN OK:", username)
+            print("LOGIN OK:", user[1])
             
             cursor.execute(
-                """
-                INSERT OR REPLACE INTO online_users
-                (username, last_seen)
-                VALUES (?, ?)
-                """,
-                (
-                    username,
-                    datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                )
-            )
+    """
+    INSERT OR REPLACE INTO online_users
+    (username, last_seen)
+    VALUES (?, ?)
+    """,
+    (
+        user[1],
+        datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    )
+)
             
             conn.commit()
             print("ONLINE SAVED")
