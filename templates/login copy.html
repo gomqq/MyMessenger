@@ -21,109 +21,113 @@
 
 <div class="background">
 
-    <div class="blur blur-one"></div>
-
-    <div class="blur blur-two"></div>
+    <div class="blur blur-1"></div>
+    <div class="blur blur-2"></div>
 
 </div>
 
-<div class="page">
+<div class="login-wrapper">
 
-    <div class="brand">
+    <div class="left-panel">
 
         <div class="logo">
 
-            ⚡
+            <div class="logo-icon">
+
+                ⚡
+
+            </div>
+
+            <h1>Pulse</h1>
 
         </div>
 
-        <h1>Pulse</h1>
-
-        <p>
+        <h2>
 
             Общение нового поколения
 
+        </h2>
+
+        <p>
+
+            Быстро.
+            Красиво.
+            Безопасно.
+
         </p>
+
         <div class="features">
 
-    <div class="feature">
+            <div class="feature">
 
-        💬 Современный мессенджер
+                💬 Современный мессенджер
+
+            </div>
+
+            <div class="feature">
+
+                🤖 AI помощник
+
+            </div>
+
+            <div class="feature">
+
+                🔒 Сквозное шифрование
+
+            </div>
+
+            <div class="feature">
+
+                ⚡ Мгновенные сообщения
+
+            </div>
+
+        </div>
 
     </div>
 
-    <div class="feature">
+    <div class="right-panel">
 
-        🤖 AI-помощник
+        <div class="login-card">
 
-    </div>
+            <h2>
 
-    <div class="feature">
+                Добро пожаловать 👋
 
-        🔒 Сквозное шифрование
+            </h2>
 
-    </div>
+            <p>
 
-    <div class="feature">
+                Войдите в свой аккаунт
 
-        ⚡ Мгновенные сообщения
+            </p>
 
-    </div>
+            <form method="POST">
+                <div class="input-group">
 
-</div>
-
-</div>
-
-<div class="login-card">
-
-    <h2>
-
-        Добро пожаловать 👋
-
-    </h2>
-
-    <p class="subtitle">
-
-        Войдите в свой аккаунт
-
-    </p>
-
-    <form method="POST">
-        <div class="input-group">
-
-    <label for="phone">
-
-        Номер телефона
-
-    </label>
+    <label>Номер телефона</label>
 
     <input
-        id="phone"
-        class="input"
-        type="tel"
+        type="text"
         name="username"
+        class="input"
         placeholder="+41 79 123 45 67"
-        autocomplete="tel"
         required>
 
 </div>
+
 <div class="input-group">
 
-    <label for="password">
-
-        Пароль
-
-    </label>
+    <label>Пароль</label>
 
     <div class="password-box">
 
         <input
-            id="password"
-            class="input"
             type="password"
             name="password"
+            class="input"
+            id="password"
             placeholder="Введите пароль"
-            autocomplete="current-password"
             required>
 
         <button
@@ -138,13 +142,13 @@
     </div>
 
 </div>
+
 <div class="login-options">
 
     <label class="remember">
 
         <input
-            type="checkbox"
-            name="remember">
+            type="checkbox">
 
         <span>
 
@@ -163,27 +167,36 @@
 </div>
 
 <button
-    class="login-button"
-    type="submit">
+class="login-button"
+type="submit">
 
     Войти →
 
 </button>
+
 <div class="divider">
 
-    <span>или</span>
+    <span>
+
+        или
+
+    </span>
 
 </div>
 
 <div class="social-buttons">
 
-    <button type="button" class="google-button">
+    <button
+    type="button"
+    class="google">
 
         Google
 
     </button>
 
-    <button type="button" class="apple-button">
+    <button
+    type="button"
+    class="apple">
 
         Apple
 
@@ -202,6 +215,7 @@
     </a>
 
 </div>
+</form>
 
 <div class="security-text">
 
@@ -209,13 +223,31 @@
 
 </div>
 
-</form>
-
 </div>
 
 </div>
 
-<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+</div>
+
+<script>
+
+function togglePassword(){
+
+    const password = document.getElementById("password");
+
+    if(password.type === "password"){
+
+        password.type = "text";
+
+    }else{
+
+        password.type = "password";
+
+    }
+
+}
+
+</script>
 
 </body>
 
