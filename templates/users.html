@@ -4,189 +4,60 @@
 Пользователи
 {% endblock %}
 
-{% block head %}
-<style>
-
-.header{
-    padding:12px;
-    text-align:center;
-    border-bottom:1px solid rgba(255,255,255,.05);
-    background:#111827;
-}
-
-.logo{
-    font-size:34px;
-    font-weight:800;
-    letter-spacing:3px;
-    background:linear-gradient(
-        90deg,
-        #00e5ff,
-        #5b7fff
-    );
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-}
-
-.subtitle{
-    margin-top:4px;
-    color:#94a3b8;
-    font-size:13px;
-}
-
-.users{
-    max-width:800px;
-    margin:30px auto;
-    padding:20px;
-}
-
-.search{
-    width:100%;
-    padding:15px;
-    border:none;
-    border-radius:14px;
-    background:#111827;
-    color:white;
-    font-size:16px;
-    margin-bottom:20px;
-}
-
-.search::placeholder{
-    color:#94a3b8;
-}
-
-.search:focus{
-    outline:none;
-}
-
-.user{
-    display:flex;
-    align-items:center;
-    gap:15px;
-    background:#111827;
-    padding:18px;
-    margin-bottom:12px;
-    border-radius:18px;
-    text-decoration:none;
-    color:white;
-    transition:.2s;
-}
-
-.user:hover{
-    transform:translateY(-2px);
-    background:#182338;
-}
-
-.avatar{
-    width:50px;
-    height:50px;
-    border-radius:50%;
-    object-fit:cover;
-    border:2px solid #00e5ff;
-}
-
-.info{
-    flex:1;
-}
-
-.name{
-    font-size:18px;
-    font-weight:bold;
-}
-
-.status{
-    color:#22c55e;
-    font-size:14px;
-    margin-top:4px;
-}
-
-</style>
-{% endblock %}
 
 {% block content %}
 
-<div class="header">
+<div style="padding:30px;">
 
-    <div class="logo">
-        ⚡ PULSE
-    </div>
+<h2>👥 Пользователи Pulse</h2>
 
-    <div class="subtitle">
-    Ваши контакты
-</div>
+<div style="
+display:flex;
+flex-direction:column;
+gap:15px;
+margin-top:20px;
+">
 
-</div>
+{% for username, avatar in users %}
 
-<div class="users">
+<a href="/dialog/{{ username }}"
+style="
+text-decoration:none;
+color:white;
+background:#111827;
+padding:15px;
+border-radius:15px;
+display:flex;
+align-items:center;
+gap:15px;
+">
 
-    <input
-        type="text"
-        id="search"
-        class="search"
-        placeholder="🔍 Найти пользователя..."
-    >
+<img 
+src="/static/avatars/{{ avatar }}"
+width="50"
+height="50"
+style="
+border-radius:50%;
+object-fit:cover;
+">
 
-    {% for user in users %}
+<div>
+<b>{{ username }}</b>
 
-    <a
-        class="user"
-        data-username="{{ user[0] }}"
-        href="/dialog/{{ user[0] }}"
-    >
+<br>
 
-        <img
-        src="{{ url_for('static', filename='avatars/default.png') }}"
-        class="avatar">
-
-        <div class="info">
-
-            <div class="name">
-                {{ user[0] }}
-            </div>
-
-            <div class="status">
-
-            {% if user[1] %}
-
-            🟢 Онлайн
-
-            {% else %}
-
-            ⚫ Оффлайн
-
-            {% endif %}
-
-            </div>
-
-        </div>
-
-    </a>
-
-    {% endfor %}
+<span style="color:#22c55e;">
+● онлайн
+</span>
 
 </div>
 
-<script>
+</a>
 
-const search = document.getElementById("search");
+{% endfor %}
 
-search.addEventListener("keyup", function(){
+</div>
 
-    let value = this.value.toLowerCase();
-
-    document.querySelectorAll(".user").forEach(user => {
-
-        let username = user.dataset.username.toLowerCase();
-
-        if(username.includes(value)){
-            user.style.display = "flex";
-        }else{
-            user.style.display = "none";
-        }
-
-    });
-
-});
-
-</script>
+</div>
 
 {% endblock %}

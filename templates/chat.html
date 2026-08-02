@@ -156,7 +156,7 @@
 
     </div>
 
-    <form class="form" method="POST">
+    <form class="form" method="POST" action="/send_message">
 
 <input
     type="file"
@@ -182,12 +182,12 @@
     </button>
 
     <input
-        type="text"
-        name="message"
-        placeholder="💬 Написать сообщение..."
-        autocomplete="off"
-        required
-    >
+    type="text"
+    name="text"
+    placeholder="💬 Написать сообщение..."
+    autocomplete="off"
+    required
+>
 
     <button type="submit">
         ➤
@@ -201,10 +201,43 @@
 
 function loadMessages(){
 
-    fetch("/messages")
-    .then(response => response.text())
+    fetch("/api/messages")
+    .then(response => response.json())
     .then(data => {
-        document.getElementById("messages").innerHTML = data;
+
+        let box = document.getElementById("messages");
+
+        box.innerHTML = "";
+
+
+        data.messages.forEach(msg => {
+
+            let side = msg.username === "{{ session['username'] }}"
+                ? "right"
+                : "left";
+
+
+            box.innerHTML += `
+
+            <div class="message ${side}">
+
+                <div class="author">
+                    ${msg.username} • ${msg.created_at}
+                </div>
+
+                <div>
+                    ${msg.text}
+                </div>
+
+            </div>
+
+            `;
+
+        });
+
+
+        box.scrollTop = box.scrollHeight;
+
     });
 
 }
